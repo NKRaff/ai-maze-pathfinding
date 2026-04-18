@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>IA Maze Pathfinding</title>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>Maze generator</h2>
+
+    <div>
+      <label for="rows">Rows</label>
+      <input type="number" name="rows" id="rows" value="20" min="5">
+    </div>
+    
+    <div>
+      <label for="cols">Cols</label>
+      <input type="number" name="cols" id="cols" value="20" min="5">
+    </div>
+    
+    <div>
+      <label for="cell-size">Cell size</label>
+      <input type="number" name="cell-size" id="cell-size" value="10" min="5">
+    </div>
+
+    <div>
+      <label for="generation-algorithm">Maze generation algorithms</label>
+      <select name="generation-algorithm" id="generation-algorithm">
+        <option value="backtracking">Backtracking</option>
+        <option value="prims">Prim's</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="perfect-maze">
+        <input type="checkbox" name="perfect-maze" id="perfect-maze" checked>
+        Perfect maze
+      </label>
+    </div>
+
+    <hr>
+    <h2>Solver</h2>
+
+    <div>
+      <label for="solver-algorithm">Maze solver algorithms</label>
+      <select name="solver-algorithm" id="solver-algorithm">
+        <option value="astar" selected>A*</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="heuristic">Heuristic</label>
+      <select name="heuristic" id="heuristic">
+        <option value="manhattan" selected>Manhattan distance</option>
+        <option value="euclidean">Euclidean distance</option>
+        <option value="none">None</option>
+      </select>
+    </div>
+
+    <hr>
+    <h2>General settings</h2>
+
+    <div>
+      <label for="animation">
+        <input type="checkbox" name="animation" id="animation" checked>
+        Enable animation
+      </label>
+    </div>
+
+    <div>
+      <label for="speed">Animation speed</label>
+      <input type="range" name="speed" id="speed" value="1" min="0.25" max="2" step="0.25">
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+   <main>
+    <div class="button-bar">
+      <button id="generate-maze">Generate maze</button>
+      <button id="solve-maze" disabled>Solve maze</button>
+    </div>
+
+    <div class="canvas-container">
+      <canvas id="maze-canvas" width="0" height="0"></canvas>
+    </div>
+   </main>
+
+   <script type="module" src="src/main.js"></script>
+</body>
+</html>

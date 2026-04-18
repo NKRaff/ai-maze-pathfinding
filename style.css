@@ -1,0 +1,142 @@
+:root{
+  --dark-color: #191923;
+  --blue-color: #0E79B2;
+  --green-color: #32936F;
+  --red-color: #C14953;
+  --gray-color: #8A8C8E;
+  --light-color: #f4f4f4;
+  --white-color: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body, button {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--dark-color);
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-color);
+}
+
+canvas {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.sidebar {
+  width: 26.4rem;
+  min-width: 26.4rem;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--light-color);
+}
+
+.sidebar label {
+  font-size: 1.6rem;
+  color: var(--gray-color);
+}
+
+.sidebar input,
+.sidebar select {
+  width: 100%;
+  padding: .8rem;
+  margin-top: .4rem;
+  border-radius: .8rem;
+  border: none;
+  font-size: 1.6rem;
+  background-color: #39394e;
+  color: var(--light-color);
+  accent-color: var(--blue-color);
+  transition: all ease 400ms;
+  outline: none;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.sidebar input:focus,
+.sidebar select:focus {
+  box-shadow: 0 0 0 2px var(--blue-color);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.sidebar input[type="checkbox"] {
+  width: auto;
+  margin-right: .4rem;
+}
+
+.button-bar {
+  height: 6.4rem;
+  background-color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.button-bar button {
+  padding: .8rem 1.6rem;
+  border: none;
+  border-radius: .8rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1.6rem;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  transition: 200ms;
+}
+
+.button-bar button:hover {
+  background-color: var(--blue-color);
+}
+
+.button-bar button:disabled {
+  background-color: var(--gray-color);
+  cursor: default;
+}
+
+.canvas-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
