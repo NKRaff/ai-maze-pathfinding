@@ -52,4 +52,26 @@ export default class Grid {
 
     return neighbors
   }
+
+  clone() {
+    const newGrid = new Grid(this.rows, this.cols)
+    const grid = []
+    for (let r = 0; r < this.rows; r++) {
+      const row = []
+      for (let c = 0; c < this.cols; c++) {
+        const oldCell = this.getCell(r, c)
+        const newCell = new Cell(r, c)
+        
+        newCell.type = oldCell.type
+        newCell.role = oldCell.role
+        newCell.state = oldCell.state
+        
+        row.push(newCell)
+      }
+      
+      grid.push(row)
+    }
+    newGrid.cells = grid
+    return newGrid
+  }
 }

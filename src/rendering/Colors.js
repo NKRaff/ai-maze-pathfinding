@@ -21,6 +21,6 @@ export const CellStateColor = {
   [CellState.GENERATING]: Colors.BLUE,
   [CellState.GENERATED]: Colors.LIGHT,
   [CellState.VISITING]: Colors.BLUE,
-  [CellState.VISITED]: Colors.DARK_BLUE,
+  [CellState.VISITED]: Colors.BLUE,
   [CellState.PATH]: Colors.YELLOW,
 }

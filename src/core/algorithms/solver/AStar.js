@@ -8,8 +8,13 @@ export default class AStar {
   }
 
   *solver(maze) {
+    const timeStart = performance.now()
     const grid = maze.grid
     const priorityList = []
+
+    let visiting = 0
+    let visited = 0
+    let maxFrontierSize = 0
 
     priorityList.push({
       cell: maze.start,
@@ -22,20 +27,34 @@ export default class AStar {
     while (priorityList.length > 0) {
       priorityList.sort((a, b) => a.f - b.f)
 
+      if (priorityList.length > maxFrontierSize) maxFrontierSize = priorityList.length
+
       const current = priorityList.shift()
-      current.state = CellState.VISITED
+      current.cell.state = CellState.VISITED
+      visited += 1
 
       if (current.cell === maze.end) {
-        return this.#reconstructPath(current)
+        const timeEnd = performance.now()
+        const pathLength = this.#reconstructPath(current)
+        return {
+          algorithm: "A*",
+          heuristic: this.heuristic,
+          time: timeEnd - timeStart,
+          visiting,
+          visited,
+          pathCost: current.g,
+          pathLength,
+          maxFrontierSize
+        }
       }
 
       const neighbors = grid.getNeighbors(current.cell, CellType.PATH, 1)
       for (const n of neighbors) {
-        if (n.state === CellState.VISITING) continue
-
+        if (n.state === CellState.VISITED) continue;
         const existingNode = priorityList.find(node => node.cell === n)
         if (!existingNode)  {
           n.state = CellState.VISITING
+          visiting += 1
           priorityList.push(this.#createNode(current, n, maze.end))
         } else if (current.g + 1 < existingNode.g) {
           existingNode.g = current.g + 1
@@ -57,9 +76,12 @@ export default class AStar {
 
   #reconstructPath(node) {
     let current = node
+    let pathLength = 0
     while (current && current.parent) {
       current.cell.state = CellState.PATH
       current = current.parent
+      pathLength += 1
     }
+    return pathLength
   }
 }

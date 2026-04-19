@@ -7,9 +7,14 @@ export default class MazeRenderer {
     this.cellSize = cellSize
   }
 
+  setup(rows, cols) {
+    this.canvas.width = cols * this.cellSize
+    this.canvas.height = rows * this.cellSize
+  }
+
   draw(maze) {
     const grid = maze.grid
-    this.#resize(grid.rows, grid.cols)
+    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
     for (let r = 0; r < grid.rows; r++) {
@@ -22,11 +27,6 @@ export default class MazeRenderer {
         this.ctx.fillRect(x, y, this.cellSize, this.cellSize)
       }
     }
-  }
-
-  #resize(rows, cols) {
-    this.canvas.width = cols * this.cellSize
-    this.canvas.height = rows * this.cellSize
   }
 
   #getColor(cell) {
