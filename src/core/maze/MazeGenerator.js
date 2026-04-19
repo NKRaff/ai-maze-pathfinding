@@ -1,4 +1,5 @@
 import Backtracking from "../algorithms/generator/Backtracking.js"
+import Prim from "../algorithms/generator/Prim.js"
 
 export default class MazeGenerator {
   create(algorithm) {
@@ -6,6 +7,7 @@ export default class MazeGenerator {
   }
 
   algorithms = {
-    ["backtraking"]: Backtracking
+    ["backtracking"]: Backtracking,
+    ["prim"]: Prim
   }
 }

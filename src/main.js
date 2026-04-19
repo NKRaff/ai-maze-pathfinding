@@ -50,7 +50,7 @@ btnAllGenerate.addEventListener("click", () => {
   maze = new Maze(rows, cols, true)
   rendererList.length = 0
 
-  const mazeGenerator = new MazeGenerator().create("backtraking")
+  const mazeGenerator = new MazeGenerator().create(algorithm)
   const generator = mazeGenerator.generate(maze, perfectMaze)
   
   canvases.forEach((canvas, index) => {
@@ -75,7 +75,6 @@ btnAllSolve.addEventListener("click", async () => {
       const stats = await controller.handle(solver, render, mazeClone, enableAnimation)
       fillStats(i, stats)
     }
-    console.log('terminou')
   }
 })
 

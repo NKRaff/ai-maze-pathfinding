@@ -1,6 +1,5 @@
 export default class AppController {
   handle(process, renderer, maze, enableAnimation) {
-    console.log('começou')
     if (enableAnimation) {
       return this.#handleAnimate(process, renderer, maze)
     } else {
