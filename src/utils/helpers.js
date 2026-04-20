@@ -9,30 +9,77 @@ export function getRandomInt(max) {
   return Math.floor(Math.random() * max)
 }
 
-export function getCellSize(rows, cols, cardWidth) {
-  const availableWidth = cardWidth
-  const availableHeight = availableWidth 
-
+export function getCellSize(rows, cols, wrapperElement) {
+  const availableWidth = wrapperElement.clientWidth
+  const availableHeight = wrapperElement.clientHeight 
+  
   const maxCellWidth = availableWidth / cols
   const maxCellHeight = availableHeight / rows
 
   return Math.floor(Math.min(maxCellWidth, maxCellHeight))
 }
 
-export function createCard() {
-  const combinations = []
+export function createCard(mode) {
+  const mazeContainer = document.querySelector(".maze-container");
+  mazeContainer.innerHTML = "";
+  const combinations = [];
 
-  const solverAlgorithms = document.querySelector("#solver-algorithm").options
-  const solverHeuristics = document.querySelector("#heuristic").options
+  if (mode === "benchmark") {
+    const solverAlgorithms = document.querySelector("#solver-algorithm").options
+    const solverHeuristics = document.querySelector("#heuristic").options
+    mazeContainer.style.gridTemplateColumns = "repeat(3, minmax(28rem, 1fr))"
+    mazeContainer.classList.remove("playground-mode");
 
-  for (let a = 0; a < solverAlgorithms.length; a++) {
-    for (let h = 0; h < solverHeuristics.length; h++) {
-      combinations.push({
-        algo: solverAlgorithms[a].value,
-        heur: solverHeuristics[h].value
-      })
+    for (let a = 0; a < solverAlgorithms.length; a++) {
+      for (let h = 0; h < solverHeuristics.length; h++) {
+        combinations.push({
+          algo: solverAlgorithms[a].value,
+          heur: solverHeuristics[h].value
+        })
+      }
     }
+  } else {
+    mazeContainer.classList.add("playground-mode");
+    mazeContainer.style.gridTemplateColumns = "minmax(28rem, 1fr)"
+    combinations.push({ algo: 'custom', heur: 'custom' });
   }
+
+  combinations.forEach((combo, index) => {
+    const algo = combo.algo.charAt(0).toUpperCase() + combo.algo.slice(1)
+    const heur = combo.heur.charAt(0).toUpperCase() + combo.heur.slice(1)
+    
+    const mazeContainer = document.querySelector(".maze-container")
+    const card = document.createElement("div")
+    
+    const title = mode === "benchmark" ? `<h3>${algo} (${heur})</h3>` : ""
+
+    card.innerHTML = `
+      <div class="maze-card">
+        ${title}
+        <div class="canvas-container">
+          <div class="canvas-wrapper">
+            <canvas class="maze-canvas" width="0" height="0"></canvas>
+          </div>
+        </div>
+        <div class="stats">
+          <p>Latency: <span class="latency"></span></p>
+          <p>Visited Nodes: <span class="visited-nodes"></span></p>
+          <p>Explored Nodes: <span class="explored-nodes"></span></p>
+          <p>Path Cost: <span class="path-cost"></span></p>
+          <p>Path Length: <span class="path-length"></span></p>
+          <p>Max Frontier Size: <span class="max-frontier-size"></span></p>
+        </div>
+      </div>
+    `
+
+    mazeContainer.appendChild(card)
+  })
+
+  return combinations
+}
+
+export function oldcreateCard() {
+  const combinations = []
 
   combinations.forEach((combo, index) => {
     const algo = combo.algo.charAt(0).toUpperCase() + combo.algo.slice(1)

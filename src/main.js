@@ -5,53 +5,56 @@ import MazeSolver from "./core/maze/MazeSolver.js"
 import MazeRenderer from "./rendering/MazeRenderer.js"
 import { createCard, eraseStats, fillStats, getCellSize } from "./utils/helpers.js"
 
-//const canvas = document.querySelector("#maze-canvas")
 const btnGenerate = document.querySelector("#generate-maze")
-const btnAllGenerate = document.querySelector("#generate-all-maze")
 const btnSolve = document.querySelector("#solve-maze")
-const btnAllSolve = document.querySelector("#solve-all-maze")
+const btnNav = document.querySelectorAll(".nav-icon div")
 
 const controller = new AppController()
 
+let mode
 let maze
-let renderer
 let rendererList = []
-const combinations = createCard()
+let combinations
 
-btnGenerate.addEventListener("click", () => {
-  const rows = Number(document.querySelector("#rows").value)
-  const cols = Number(document.querySelector("#cols").value)
-  const cellSize = Number(document.querySelector("#cell-size").value)
-  const perfectMaze = document.querySelector("#perfect-maze").checked
-  const enableAnimation = document.querySelector("#animation").checked
-  
-  maze = new Maze(rows, cols)
-  renderer = new MazeRenderer(canvas, cellSize)
-  
-  const mazeGenerator = new MazeGenerator().create("backtraking")
-  const generator = mazeGenerator.generate(maze, perfectMaze)
-  
-  controller.handle(generator, renderer, maze, enableAnimation)
+// NAVEGATION
+btnNav.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const id = btn.getAttribute("content-id")
+    const settingShowing = document.querySelector(".show")
+    
+    if (settingShowing.getAttribute("id") === id) return
+    
+    const btnActiving = document.querySelector(".active")
+    const settingId = document.querySelector(`#${id}`)
+    
+    settingShowing.classList.remove("show")
+    btnActiving.classList.remove("active")
+
+    settingId.classList.add("show")
+    btn.classList.add("active")
+  })
 })
 
-btnAllGenerate.addEventListener("click", () => {
-  const canvases = document.querySelectorAll(".maze-canvas")
-  const canvasWrapper = document.querySelector(".canvas-wrapper")
-  const cardWidth = canvasWrapper.clientWidth
+// MAZE GENERATE
+btnGenerate.addEventListener("click", async () => {
+  mode = document.querySelector("#workspace").value
 
+  combinations = createCard(mode)
+  
   const rows = Number(document.querySelector("#rows").value)
   const cols = Number(document.querySelector("#cols").value)
-  const cellSize = getCellSize(rows, cols, cardWidth)
-
-  const perfectMaze = document.querySelector("#perfect-maze").checked
-  const enableAnimation = document.querySelector("#animation").checked
   const algorithm = document.querySelector("#generation-algorithm").value
+  const enableAnimation = document.querySelector("#animation").checked
+  const perfectMaze = document.querySelector("#perfect-maze").checked
 
-  maze = new Maze(rows, cols, true)
-  rendererList.length = 0
+  const initPoint = mode === "playground" ? false : true
+  maze = new Maze(rows, cols, initPoint)
+  rendererList.length = 0;
 
-  const mazeGenerator = new MazeGenerator().create(algorithm)
-  const generator = mazeGenerator.generate(maze, perfectMaze)
+  const generator = new MazeGenerator().create(algorithm).generate(maze, perfectMaze)
+  const canvases = document.querySelectorAll(".maze-canvas")
+  const canvasWrapper = document.querySelector(".canvas-wrapper")
+  const cellSize = getCellSize(rows, cols, canvasWrapper)
   
   canvases.forEach((canvas, index) => {
     eraseStats(index)
@@ -61,47 +64,48 @@ btnAllGenerate.addEventListener("click", () => {
     controller.handle(generator, render, maze, enableAnimation)
   })
 
+  if (canvases.length === 1) addEventCanvas()
 })
 
-btnAllSolve.addEventListener("click", async () => {
+// MAZE SOLVE
+btnSolve.addEventListener("click", async () => {
+  if (!maze || rendererList.length === 0 || !maze.start || !maze.end) return
+
   const enableAnimation = document.querySelector("#animation").checked
-  
+
   for (let i = 0; i < combinations.length; i++) {
     const render = rendererList[i]
-    if(render) {
-      const mazeClone = maze.clone()
-      const mazeSolver = new MazeSolver().create(combinations[i].algo, combinations[i].heur)
-      const solver = mazeSolver.solver(mazeClone)
-      const stats = await controller.handle(solver, render, mazeClone, enableAnimation)
-      fillStats(i, stats)
+    const mazeClone = maze.clone()
+
+    let algo
+    let heur
+
+    if (mode === "playground") {
+      algo = document.querySelector("#solver-algorithm").value
+      heur = document.querySelector("#heuristic").value
+    } else {
+      algo = combinations[i].algo
+      heur = combinations[i].heur
     }
+
+    const solver = new MazeSolver().create(algo, heur).solver(mazeClone)
+    const stats = await controller.handle(solver, render, mazeClone, enableAnimation)
+    fillStats(i, stats)
   }
 })
 
-btnSolve.addEventListener("click", () => {
-  if (!maze || !renderer || !maze.start || !maze.end) return
+function addEventCanvas() {
+  const canvas = document.querySelector("canvas")
+  canvas.addEventListener("click", (event) => {
+    const rect = canvas.getBoundingClientRect()
 
-  const algorithm = document.querySelector("#solver-algorithm").value
-  const heuristic = document.querySelector("#heuristic").value
-  const enableAnimation = document.querySelector("#animation").checked
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
 
-  const mazeSolver = new MazeSolver().create(algorithm, heuristic)
-  const solver = mazeSolver.solver(maze)
-
-  controller.handle(solver, renderer, maze, enableAnimation)
-})
-
-// canvas.addEventListener("click", (event) => {
-//   const rect = canvas.getBoundingClientRect()
-  
-//   const x = event.clientX - rect.left
-//   const y = event.clientY - rect.top
-
-//   const row = Math.floor(y / renderer.cellSize)
-//   const col = Math.floor(x / renderer.cellSize)
-
-//   maze.setPoint(row, col)
-//   renderer.draw(maze)
-
-//   btnSolve.disabled = false
-// })
+    const row = Math.floor(y / rendererList[0].cellSize)
+    const col = Math.floor(x / rendererList[0].cellSize)
+    
+    maze.setPoint(row, col)
+    rendererList[0].draw(maze)
+  })
+}

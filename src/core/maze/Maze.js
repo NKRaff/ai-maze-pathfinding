@@ -16,6 +16,7 @@ export default class Maze {
     const cell = this.grid.getCell(row, col)
     if (cell.type === CellType.WALL || cell === this.start || cell === this.end) return
     this.isStartTurn ? this.setStart(cell) : this.setEnd(cell) 
+    this.isStartTurn = !this.isStartTurn
   }
 
   clone() {

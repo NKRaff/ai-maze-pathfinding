@@ -24,65 +24,107 @@ body {
   overflow: hidden;
 }
 
-body, button {
+body, button, input, select {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
   color: var(--dark-color);
 }
 
-main {
-  flex: 1;
+.sidebar {
+  min-width: 32rem;
+  width: 32rem;
   display: flex;
-  flex-direction: column;
-  background-color: var(--light-color);
-}
-
-canvas {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.sidebar {
-  width: 26.4rem;
-  min-width: 26.4rem;
-  background-color: var(--dark-color);
-  color: var(--light-color);
-  padding: 2.4rem;
+.nav-icon {
+  width: 6.4rem;
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
-  overflow-y: auto;
+  align-items: center;
+  padding: 2.4rem 0;
+  background-color: var(--dark-color);
+  padding-left: .8rem;
+  overflow: hidden;
 }
 
-.sidebar h2 {
+.nav-icon div {
+  width: 100%;
+  padding: 1.6rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: .8rem 0 0 .8rem;
+}
+
+.nav-icon div:hover {
+  background-color: var(--blue-color);
+}
+
+.active {
+  background-color: var(--white-color);
+}
+
+.nav-icon .active:hover {
+  background-color: var(--white-color);
+}
+
+.active svg {
+  fill: var(--dark-color);
+}
+
+.setting {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.6rem;
+  height: 100dvh;
+  display: none;
+}
+
+.setting>div {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 3.2rem;
+  padding: 0 .8rem;
+}
+
+.setting h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--light-color);
+  color: var(--blue-color);
+  margin-bottom: 2.4rem;
 }
 
-.sidebar label {
+.setting label {
   font-size: 1.6rem;
-  color: var(--gray-color);
+  font-weight: 500;
+  color: var(--dark-color);
 }
 
-.sidebar input,
-.sidebar select {
+.setting input,
+.setting select {
   width: 100%;
   padding: .8rem;
   margin-top: .4rem;
   border-radius: .8rem;
   border: none;
   font-size: 1.6rem;
-  background-color: #39394e;
-  color: var(--light-color);
+  background-color: var(--light-color);
+  color: var(--dark-color);
   accent-color: var(--blue-color);
   transition: all ease 400ms;
   outline: none;
   box-shadow: 0 0 0 0 transparent;
 }
 
-.sidebar input:focus,
-.sidebar select:focus {
+.setting input:focus,
+.setting select:focus {
   box-shadow: 0 0 0 2px var(--blue-color);
 }
 
@@ -97,23 +139,13 @@ input[type=number] {
   appearance: textfield;
 }
 
-.sidebar input[type="checkbox"] {
+.setting input[type="checkbox"] {
   width: auto;
   margin-right: .4rem;
 }
 
-.button-bar {
-  height: 6.4rem;
-  background-color: var(--white-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2.4rem;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-
-.button-bar button {
-  padding: .8rem 1.6rem;
+.setting button {
+  padding: 1.6rem;
   border: none;
   border-radius: .8rem;
   cursor: pointer;
@@ -124,22 +156,28 @@ input[type=number] {
   transition: 200ms;
 }
 
-.button-bar button:hover {
+.setting button:hover {
   background-color: var(--blue-color);
 }
 
-.button-bar button:disabled {
+.setting button:disabled {
   background-color: var(--gray-color);
   cursor: default;
 }
 
+.setting.show {
+  display: flex;
+}
+
 .maze-container {
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, minmax(28rem, 1fr));
-  gap: 1.6rem;
+  grid-template-columns: minmax(28rem, 1fr);
   padding: 1.6rem;
   font-size: 1.6rem;
   overflow-y: auto;
+  max-height: 100dvh;
+  gap: 1.6rem;
 }
 
 .maze-card {
@@ -153,13 +191,14 @@ input[type=number] {
 }
 
 .canvas-container {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .canvas-wrapper {
-  width: 100%;
+  width: min(100%, 80dvh);
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -172,6 +211,38 @@ input[type=number] {
   image-rendering: pixelated;
 }
 
+.maze-container.playground-mode {
+  height: 100%;
+  overflow: hidden;
+}
+
+.maze-container.playground-mode .maze-card {
+  height: 98.5%;
+  overflow: hidden;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.maze-container.playground-mode .canvas-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maze-container.playground-mode .canvas-wrapper {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+}
+
 span {
   color: var(--blue-color);
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--dark-color);
 }

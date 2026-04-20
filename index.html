@@ -7,93 +7,110 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <title>IA Maze Pathfinding</title>
+  <title>Document</title>
 </head>
 <body>
-
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <h2>Maze generator</h2>
+    <div class="nav-icon">
+      <div class="active" content-id="generate">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f4f4f4"><path d="M120-520v-320h320v320H120Zm0 400v-320h320v320H120Zm400-400v-320h320v320H520Zm0 400v-320h320v320H520ZM200-600h160v-160H200v160Zm400 0h160v-160H600v160Zm0 400h160v-160H600v160Zm-400 0h160v-160H200v160Zm400-400Zm0 240Zm-240 0Zm0-240Z"/></svg>
+      </div>
+  
+      <div content-id="solve">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f4f4f4"><path d="m300-300 280-80 80-280-280 80-80 280Zm180-120q-25 0-42.5-17.5T420-480q0-25 17.5-42.5T480-540q25 0 42.5 17.5T540-480q0 25-17.5 42.5T480-420Zm0 340q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Zm0-320Z"/></svg>
+      </div>
+  
+      <div content-id="general">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f4f4f4"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+      </div>
+    </div>
+    <div class="setting show" id="generate">
+      <div>
+        <h2>Generate Settings</h2>
+        <div>
+          <label for="rows">Rows</label>
+          <input type="number" name="rows" id="rows" value="20" min="5">
+        </div>
+        
+        <div>
+          <label for="cols">Cols</label>
+          <input type="number" name="cols" id="cols" value="20" min="5">
+        </div>
 
-    <div>
-      <label for="rows">Rows</label>
-      <input type="number" name="rows" id="rows" value="20" min="5">
+        <div>
+          <label for="generation-algorithm">Generate Strategy</label>
+          <select name="generation-algorithm" id="generation-algorithm">
+            <option value="backtracking">Backtracking</option>
+            <option value="prim">Prim</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="workspace">Environment Mode</label>
+          <select name="workspace" id="workspace">
+            <option value="playground">Playground</option>
+            <option value="benchmark">Benchmark</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="perfect-maze">
+            <input type="checkbox" name="perfect-maze" id="perfect-maze" checked>
+            Perfect maze
+          </label>
+        </div>
+      </div>
+
+      <button id="generate-maze">Generate maze</button>
+    </div>
+
+    <div class="setting" id="solve">
+      <div>
+        <h2>Solve Settings</h2>
+        <div>
+          <label for="solver-algorithm">Search Strategy</label>
+          <select name="solver-algorithm" id="solver-algorithm">
+            <option value="astar" selected>A*</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="heuristic">Heuristic Function (<i>h(n)</i>)</label>
+          <select name="heuristic" id="heuristic">
+            <option value="manhattan" selected>Manhattan distance</option>
+            <option value="euclidean">Euclidean distance</option>
+            <option value="none">None</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="solve-maze">Solve maze</button>
     </div>
     
-    <div>
-      <label for="cols">Cols</label>
-      <input type="number" name="cols" id="cols" value="20" min="5">
-    </div>
-    
-    <div>
-      <label for="cell-size">Cell size</label>
-      <input type="number" name="cell-size" id="cell-size" value="10" min="5">
-    </div>
+    <div class="setting" id="general">
+      <div>
+        <h2>General Settings</h2>
+        <div>
+          <label for="animation">
+            <input type="checkbox" name="animation" id="animation" checked>
+            Step Delay / UPS
+          </label>
+        </div>
 
-    <div>
-      <label for="generation-algorithm">Maze generation algorithms</label>
-      <select name="generation-algorithm" id="generation-algorithm">
-        <option value="backtracking">Backtracking</option>
-        <option value="prim">Prim</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="perfect-maze">
-        <input type="checkbox" name="perfect-maze" id="perfect-maze" checked>
-        Perfect maze
-      </label>
-    </div>
-
-    <hr>
-    <h2>Solver</h2>
-
-    <div>
-      <label for="solver-algorithm">Maze solver algorithms</label>
-      <select name="solver-algorithm" id="solver-algorithm">
-        <option value="astar" selected>A*</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="heuristic">Heuristic</label>
-      <select name="heuristic" id="heuristic">
-        <option value="manhattan" selected>Manhattan distance</option>
-        <option value="euclidean">Euclidean distance</option>
-        <option value="none">None</option>
-      </select>
-    </div>
-
-    <hr>
-    <h2>General settings</h2>
-
-    <div>
-      <label for="animation">
-        <input type="checkbox" name="animation" id="animation" checked>
-        Enable animation
-      </label>
-    </div>
-
-    <div>
-      <label for="speed">Animation speed</label>
-      <input type="range" name="speed" id="speed" value="1" min="0.25" max="2" step="0.25">
+        <div>
+          <label for="speed">Animation speed</label>
+          <input type="range" name="speed" id="speed" value="1" min="0.25" max="2" step="0.25">
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
-   <main>
-    <div class="button-bar">
-      <button id="generate-maze">Generate maze</button>
-      <button id="generate-all-maze">Generate all maze</button>
-      <button id="solve-maze" disabled>Solve maze</button>
-      <button id="solve-all-maze">Solve all maze</button>
-    </div>
+  <main>
+    <div class="maze-container">
 
-    <div class="maze-container">      
     </div>
-    
-   </main>
+  </main>
 
-   <script type="module" src="src/main.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>
