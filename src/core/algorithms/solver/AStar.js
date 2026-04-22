@@ -1,5 +1,6 @@
 import { getRandomOddIntBetween } from "../../../utils/helpers.js"
 import { CellState } from "../../types/CellState.js"
+import { CellTerrain } from "../../types/CellTerrain.js"
 import { CellType } from "../../types/CellType.js"
 
 export default class AStar {
@@ -25,11 +26,14 @@ export default class AStar {
     })
 
     while (priorityList.length > 0) {
-      priorityList.sort((a, b) => a.f - b.f)
+      priorityList.sort((a, b) => a.f - b.f || a.h - b.h)
 
       if (priorityList.length > maxFrontierSize) maxFrontierSize = priorityList.length
 
       const current = priorityList.shift()
+      
+      if (current.cell.state === CellState.VISITED) continue;
+
       current.cell.state = CellState.VISITED
       visited += 1
 
@@ -51,27 +55,29 @@ export default class AStar {
       const neighbors = grid.getNeighbors(current.cell, CellType.PATH, 1)
       for (const n of neighbors) {
         if (n.state === CellState.VISITED) continue;
+        
+        const tentativeG = current.g + n.terrain
         const existingNode = priorityList.find(node => node.cell === n)
+
         if (!existingNode)  {
           n.state = CellState.VISITING
           visiting += 1
-          priorityList.push(this.#createNode(current, n, maze.end))
-        } else if (current.g + 1 < existingNode.g) {
-          existingNode.g = current.g + 1
-          existingNode.f = current.g + 1 + existingNode.h
+          priorityList.push({
+            cell: n,
+            g: tentativeG,
+            h: this.heuristic(n, maze.end),
+            f: tentativeG + this.heuristic(n, maze.end),
+            parent: current
+          })
+        } else if (tentativeG < existingNode.g) {
+          existingNode.g = tentativeG
+          existingNode.f = tentativeG + existingNode.h
           existingNode.parent = current
         }
       }
       
       yield
     }
-  }
-
-  #createNode(current, neighbor, end) {
-    const g = current.g + 1
-    const h = this.heuristic(neighbor, end)
-    const f = g + h
-    return { cell: neighbor, g, h, f, parent: current }
   }
 
   #reconstructPath(node) {

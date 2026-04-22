@@ -1,3 +1,5 @@
+import { CellType } from "../core/types/CellType.js"
+
 export function getRandomOddIntBetween(min, max) {
   if (min % 2 === 0) min += 1
   if (max % 2 === 0) max -= 1
@@ -9,6 +11,14 @@ export function getRandomInt(max) {
   return Math.floor(Math.random() * max)
 }
 
+export function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 export function getCellSize(rows, cols, wrapperElement) {
   const availableWidth = wrapperElement.clientWidth
   const availableHeight = wrapperElement.clientHeight 
@@ -17,6 +27,18 @@ export function getCellSize(rows, cols, wrapperElement) {
   const maxCellHeight = availableHeight / rows
 
   return Math.floor(Math.min(maxCellWidth, maxCellHeight))
+}
+
+export function getCellTypePath(maze) {
+  const cells = []
+  maze.grid.cells.forEach(rows => {
+    rows.forEach(cell => {
+      if (cell.type === CellType.PATH) {
+        cells.push(cell)
+      } 
+    })
+  })
+  return cells
 }
 
 export function createCard(mode) {

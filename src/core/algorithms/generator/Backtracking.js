@@ -1,9 +1,10 @@
-import { getRandomInt, getRandomOddIntBetween } from "../../../utils/helpers.js"
+import { getCellTypePath, getRandomInt, getRandomOddIntBetween, shuffle } from "../../../utils/helpers.js"
 import { CellState } from "../../types/CellState.js"
+import { CellTerrain } from "../../types/CellTerrain.js"
 import { CellType } from "../../types/CellType.js"
 
 export default class Backtracking {
-  *generate(maze, perfectMaze) {
+  *generate(maze, perfectMaze, terrains) {
     const grid = maze.grid
     const loopChance = perfectMaze ? 0 : 0.15
 
@@ -49,7 +50,7 @@ export default class Backtracking {
         
       yield
     }
-
+    this.#updateTerrain(maze, terrains)
     generating.forEach(cell => cell.state = CellState.GENERATED)
   }
 
@@ -65,4 +66,23 @@ export default class Backtracking {
 
     return wall
   }
+
+  #updateTerrain(maze, terrains) {
+    let cellPath = getCellTypePath(maze);
+    cellPath = shuffle(cellPath);
+
+    const totalCells = cellPath.length; 
+
+    for (let i = 0; i < terrains.length; i++) {
+      const nTerrain = Math.round(totalCells * (terrains[i].value / 100));
+
+      for (let j = 0; j < nTerrain; j++) {
+        if (cellPath.length === 0) break; 
+        
+        const cell = cellPath.pop();
+        cell.terrain = terrains[i].type;
+      }
+    }
+  }
+
 }

@@ -59,6 +59,31 @@
             Perfect maze
           </label>
         </div>
+
+        <div>
+          <label for="terrain">Terrain</label>
+          <p class="range-title">Normal</p>
+          <div class="range-container">
+            <input type="range" name="terrain" id="normal" value="100" min="0" max="100" step="1">
+            <div class="range-value">100%</div>
+          </div>
+          <p class="range-title">Sand</p>
+          <div class="range-container">
+            <input type="range" name="terrain" id="sand" value="0" min="0" max="100" step="1">
+            <div class="range-value">0%</div>
+          </div>
+          <p class="range-title">Water</p>
+          <div class="range-container">
+            <input type="range" name="terrain" id="water" value="0" min="0" max="100" step="1">
+            <div class="range-value">0%</div>
+          </div>
+          <p class="range-title">Mud</p>
+          <div class="range-container">
+            <input type="range" name="terrain" id="mud" value="0" min="0" max="100" step="1">
+            <div class="range-value">0%</div>
+          </div>
+        </div>
+
       </div>
 
       <button id="generate-maze">Generate maze</button>
@@ -93,13 +118,16 @@
         <div>
           <label for="animation">
             <input type="checkbox" name="animation" id="animation" checked>
-            Step Delay / UPS
+            Enable animation
           </label>
         </div>
 
         <div>
-          <label for="speed">Animation speed</label>
-          <input type="range" name="speed" id="speed" value="1" min="0.25" max="2" step="0.25">
+          <label for="speed">Step Delay / UPS</label>
+          <div class="range-container">
+            <input type="range" name="speed" id="speed" value="1" min="0.25" max="2" step="0.25">
+            <div class="range-value">1x</div>
+          </div>
         </div>
       </div>
     </div>

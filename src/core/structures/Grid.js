@@ -65,6 +65,7 @@ export default class Grid {
         newCell.type = oldCell.type
         newCell.role = oldCell.role
         newCell.state = oldCell.state
+        newCell.terrain = oldCell.terrain
         
         row.push(newCell)
       }

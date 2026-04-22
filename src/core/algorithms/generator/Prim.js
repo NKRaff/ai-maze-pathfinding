@@ -1,12 +1,13 @@
-import { getRandomInt, getRandomOddIntBetween } from "../../../utils/helpers.js"
+import { getCellTypePath, getRandomInt, getRandomOddIntBetween, shuffle } from "../../../utils/helpers.js"
 import { CellState } from "../../types/CellState.js"
 import { CellType } from "../../types/CellType.js"
 
 export default class Prim {
-  *generate(maze, perfectMaze) {
+  *generate(maze, perfectMaze, terrains) {
     const loopChance = perfectMaze ? 0 : 0.15
     const grid = maze.grid
     const fronties = []
+    const cellPath = []
 
     const row = getRandomOddIntBetween(1, grid.rows - 2)
     const col = getRandomOddIntBetween(1, grid.cols - 2)
@@ -45,6 +46,8 @@ export default class Prim {
       
       yield
     }
+
+    this.#updateTerrain(maze, terrains)
   }
 
   #addFrontier(current, maze, frontier) {
@@ -53,6 +56,24 @@ export default class Prim {
       if (n.state !== CellState.GENERATING){
         n.state = CellState.GENERATING
         frontier.push(n)
+      }
+    }
+  }
+
+  #updateTerrain(maze, terrains) {
+    let cellPath = getCellTypePath(maze);
+    cellPath = shuffle(cellPath);
+
+    const totalCells = cellPath.length; 
+
+    for (let i = 0; i < terrains.length; i++) {
+      const nTerrain = Math.round(totalCells * (terrains[i].value / 100));
+
+      for (let j = 0; j < nTerrain; j++) {
+        if (cellPath.length === 0) break; 
+        
+        const cell = cellPath.pop();
+        cell.terrain = terrains[i].type;
       }
     }
   }

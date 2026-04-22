@@ -2,12 +2,18 @@ import AppController from "./controllers/AppController.js"
 import Maze from "./core/maze/Maze.js"
 import MazeGenerator from "./core/maze/MazeGenerator.js"
 import MazeSolver from "./core/maze/MazeSolver.js"
+import { CellTerrain } from "./core/types/CellTerrain.js"
 import MazeRenderer from "./rendering/MazeRenderer.js"
+import SlidersRenderer from "./rendering/SlidersRenderer.js"
 import { createCard, eraseStats, fillStats, getCellSize } from "./utils/helpers.js"
 
 const btnGenerate = document.querySelector("#generate-maze")
 const btnSolve = document.querySelector("#solve-maze")
 const btnNav = document.querySelectorAll(".nav-icon div")
+const rangeConteiner = document.querySelectorAll(".range-container")
+
+const slidersRenderer = new SlidersRenderer(rangeConteiner)
+slidersRenderer.updateUi()
 
 const controller = new AppController()
 
@@ -51,11 +57,16 @@ btnGenerate.addEventListener("click", async () => {
   maze = new Maze(rows, cols, initPoint)
   rendererList.length = 0;
 
-  const generator = new MazeGenerator().create(algorithm).generate(maze, perfectMaze)
+  const generator = new MazeGenerator().create(algorithm).generate(maze, perfectMaze, [
+    {type: CellTerrain.DEFAULT, value: document.querySelector("#normal")},
+    {type: CellTerrain.MUD, value: document.querySelector("#mud").value},
+    {type: CellTerrain.SAND, value: document.querySelector("#sand").value},
+    {type: CellTerrain.WATER, value: document.querySelector("#water").value},
+  ])
   const canvases = document.querySelectorAll(".maze-canvas")
   const canvasWrapper = document.querySelector(".canvas-wrapper")
   const cellSize = getCellSize(rows, cols, canvasWrapper)
-  
+
   canvases.forEach((canvas, index) => {
     eraseStats(index)
     const render = new MazeRenderer(canvas, cellSize)
@@ -109,3 +120,10 @@ function addEventCanvas() {
     rendererList[0].draw(maze)
   })
 }
+
+slidersRenderer.ranges.forEach(r => {
+  r.input.addEventListener("input", (event) => {
+    slidersRenderer.normalize(event.target)
+    slidersRenderer.updateUi()
+  })
+})

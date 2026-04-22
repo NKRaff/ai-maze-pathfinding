@@ -1,4 +1,4 @@
-import { CellRoleColor, CellStateColor, Colors } from "./Colors.js"
+import { CellRoleColor, CellStateColor, CellTerrainColor, Colors } from "./Colors.js"
 
 export default class MazeRenderer {
   constructor(canvas, cellSize) {
@@ -30,6 +30,6 @@ export default class MazeRenderer {
   }
 
   #getColor(cell) {
-    return CellRoleColor[cell.role] ?? CellStateColor[cell.state] ?? Colors.DARK
+    return CellRoleColor[cell.role] ?? CellStateColor[cell.state] ?? CellTerrainColor[cell.terrain] ?? Colors.DARK
   }
 }

@@ -12,6 +12,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scrollbar-width: thin;
 }
 
 html {
@@ -245,4 +246,26 @@ main {
   min-height: 0;
   overflow: hidden;
   background-color: var(--dark-color);
+}
+
+.range-container {
+  display: flex;
+}
+
+.range-container input[type="range"] {
+  margin-right: 1.6rem;
+}
+
+.range-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.8rem;
+  font-size: 1.6rem;
+}
+
+.range-title {
+  font-size: 1.2rem;
+  position: relative;
+  top: 0.8rem;
 }

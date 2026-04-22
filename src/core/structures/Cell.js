@@ -1,5 +1,6 @@
 import { CellRole } from "../types/CellRole.js"
 import { CellState } from "../types/CellState.js"
+import { CellTerrain } from "../types/CellTerrain.js"
 import { CellType } from "../types/CellType.js"
 
 export default class Cell {
@@ -9,5 +10,6 @@ export default class Cell {
     this.type = CellType.WALL
     this.role = CellRole.NONE
     this.state = CellState.DEFAULT
+    this.terrain = CellTerrain.DEFAULT
   }
 }

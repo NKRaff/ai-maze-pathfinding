@@ -1,5 +1,6 @@
 import { CellRole } from "../core/types/CellRole.js"
 import { CellState } from "../core/types/CellState.js"
+import { CellTerrain } from "../core/types/CellTerrain.js"
 
 export const Colors = {
   DARK: "#191923",
@@ -19,8 +20,15 @@ export const CellRoleColor = {
 export const CellStateColor = {
   [CellState.DEFAULT]: Colors.DARK,
   [CellState.GENERATING]: Colors.BLUE,
-  [CellState.GENERATED]: Colors.LIGHT,
+  
   [CellState.VISITING]: Colors.BLUE,
   [CellState.VISITED]: Colors.BLUE,
   [CellState.PATH]: Colors.YELLOW,
+}
+
+export const CellTerrainColor = {
+  [CellTerrain.DEFAULT]: Colors.LIGHT,
+  [CellTerrain.MUD]: "#70543e",
+  [CellTerrain.SAND]: "#C2B280",
+  [CellTerrain.WATER]: "#d3f1f9"
 }
