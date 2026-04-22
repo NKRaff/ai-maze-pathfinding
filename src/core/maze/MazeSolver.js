@@ -1,5 +1,6 @@
 import { Heuristic } from "../algorithms/Heuristic.js";
 import AStar from "../algorithms/solver/AStar.js";
+import Greedy from "../algorithms/solver/Greedy.js";
 
 export default class MazeSolver {
   create(algorithm, heuristic) {
@@ -9,6 +10,7 @@ export default class MazeSolver {
   }
 
   algorithms = {
-    astar: AStar
+    astar: AStar,
+    greedy: Greedy
   }
 }
